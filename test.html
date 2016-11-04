@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="highlight.js"></script>
+<script type="text/javascript" src="buttons.js"></script>
+<script type="text/javascript" src="page_mod.js"></script>
+<script type="text/javascript" src="popover.js"></script>
+<script type="text/javascript" src="group_anno.js"></script>
+<link href="main.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id='rightPagePopUp'>
+    <span id='rightPageHeader'>
+    </span>
+    <div id='rightPageText'>
+    </div>
+    <hr>
+    <div>
+        <h5>Add a page note</h5>
+        <textarea id="rightPageNoteText"></textarea>
+        <div class="pull-right">
+            <button type="button" class="btn" id="rightNotesPageCancel">Cancel</button>
+            <button type="button" class="btn btn-primary" id="rightNotesPageSubmit">Submit</button>
+        </div>
+    </div>
+</div>
+<div id='leftPagePopUp'>
+    <span id='leftPageHeader'>
+    </span>
+    <div id='leftPageText'>
+    </div>
+    <hr>
+    <div>
+		<h5>Add a page note</h5>
+        <textarea id="leftPageNoteText"></textarea>
+        <div class="pull-right">
+            <button type="button" class="btn" id="leftNotesPageCancel">Cancel</button>
+            <button type="button" class="btn btn-primary" id="leftNotesPageSubmit">Submit</button>
+        </div>
+    </div>
+</div>
+<!--start toolbar-->
+<div id="toolbar">
+        <div class="row-fluid help_text">
+        <div class="span1"></div>
+        <div class="span2">modes</div>
+        <div class="span3">show/hide</div>
+        <div class="span4">show/hide</div>
+        <div class="span2"></div>
+    </div><br>
+    <!-- buttons for toolbar each span holds button/icon -->
+    <div class="row-fluid">
+    	<div class="span1 offset1 btn-group">
+            <button id="highlight" class="btn btn-large custom"><img class="icon" src="icons/highlight.png"></button> 
+            <button id="highlightDropDown" class="btn btn-large custom dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:void(0)" onClick="setHighlightColor('yellow');">yellow</a></li>
+                <li><a href="javascript:void(0)" onClick="setHighlightColor('#33CC66');">green</a></li>
+                <li><a href="javascript:void(0)" onClick="setHighlightColor('#00CCFF');">blue</a></li>
+                <li><a href="javascript:void(0)" onClick="setHighlightColor('pink');">pink</a></li> 
+            </ul> 
+        </div>
+    	<div class="span1">
+            <button id="addnote" class="btn btn-large custom"><img class="icon" src="icons/add_note.png"></button></div>
+    	<div class="span1">
+            <button id="my_markup" class="btn btn-large custom down"><img class="icon" src="icons/my_markup.png"></button></div>
+    	<div class="span1">
+            <button id="group_markup" class="btn btn-large custom down"><img class="icon" src="icons/group_markup.png"></button></div>
+        <div class="span1 btn-group">
+            <button id="notes_page" class="btn btn-large custom" data-toggle="dropdown">
+            <img class="icon" src="icons/notes_page.png"> <span class="caret down"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:void(0)" id="show_page1">Show pg 1 notes</a></li>
+                <li><a href="javascript:void(0)" id="show_page2">Show pg 2 notes</a></li> 
+            </ul> 
+        </div>
+        <div class="span1 offset1">
+            <button id="table" class="btn btn-large custom"><img class="icon" src="icons/table.png"></button></div>	
+        <div class="span1">
+            <button id="all_markup" class="btn btn-large custom"><img class="icon" src="icons/all_markup.png"></button></div>	
+        <div class="span1">
+            <div class="control-group">
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on btn" id="searchButton">Search</span>
+                        <input type="text" id="search"  onkeypress="return getSearchResults(event)" data-provide="typeahead"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span1"></div>
+    </div>
+    <!-- bottom toolbar text -->
+    <div class="row-fluid tool_text">
+        <div class="span1"></div>
+        <div class="span1">highlight</div>
+        <div class="span1">note/question</div>
+        <div class="span1">my markup</div>
+        <div class="span1">group markup</div>
+        <div class="span1">notes page</div>
+        <div class="span1 offset1">table of contents</div>
+        <div class="span1">all markup</div>
+        <div class="span2"></div>
+    </div>
+</div>
+<!-- Table of Contents Modal -->
+<div id="tableModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Table of Contents</h3>
+    </div>
+    <div id="tableBody" class="modal-body"> 
+    </div> 
+</div>
+
+<!-- Search Results Modal -->
+<div id="searchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="searchResultsLabel">Search Results</h3>
+    </div>
+    <div id="searchResultsBody" class="modal-body"> 
+    </div> 
+</div>
+
+<!-- all markup modal -->
+<div id="markupModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <div>
+            <h3 id="myModalLabel" style="display:inline">All markup</h3>
+            <span id="markButtons" class="btn-group" data-toggle="buttons-checkbox">
+              <button type="button" id="userIcon" class="btn btn-small down"><i class="icon-user"></i></button>
+              <button type="button" id="groupIcon" class="btn btn-small down"><i class="icon-mark-group"></i></button>
+              <button type="button" id="allQuestionsIcon" class="btn btn-small down"><i class="icon-mark-question"></i></button>
+			  <br/>
+			  <h6 id="myModalLabel" style="display:inline; margin: 5px;">Me</h6>
+			  <h6 id="myModalLabel" style="display:inline; margin: 5px;">Class</h6>
+			  <h6 id="myModalLabel" style="display:inline">Questions</h6>
+            </span>
+				
+      </div>
+    </div>
+    <!-- start all markup modal body (this could probably all be apended with javascript at some point) -->
+    <div id="markupBody" class="modal-body">
+		 <div class="accordion" id="accordion2"> 
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">chapter one</a> 
+                </div>
+                <div id="collapseOne" class="accordion-body collapse">
+                    <div id="chapter-1" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">chapter two</a> 
+                </div>
+                <div id="collapseTwo" class="accordion-body collapse">
+                    <div id="chapter-2" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">chapter three</a> 
+                </div>
+                <div id="collapseThree" class="accordion-body collapse">
+                    <div id="chapter-3" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">chapter four</a> 
+                </div>
+                <div id="collapseFour" class="accordion-body collapse">
+                    <div id="chapter-4" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">chapter five</a> 
+                </div>
+                <div id="collapseFive" class="accordion-body collapse">
+                    <div id="chapter-5" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">chapter six</a> 
+                </div>
+                <div id="collapseSix" class="accordion-body collapse">
+                    <div id="chapter-6" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSeven">chapter seven</a> 
+                </div>
+                <div id="collapseSeven" class="accordion-body collapse">
+                    <div id="chapter-7" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseEight">chapter eight</a> 
+                </div>
+                <div id="collapseEight" class="accordion-body collapse">
+                    <div id="chapter-8" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseNine">chapter nine</a> 
+                </div>
+                <div id="collapseNine" class="accordion-body collapse">
+                    <div id="chapter-9" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTen">chapter ten</a> 
+                </div>
+                <div id="collapseTen" class="accordion-body collapse">
+                    <div id="chapter-10" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseEleven">chapter eleven</a> 
+                </div>
+                <div id="collapseEleven" class="accordion-body collapse">
+                    <div id="chapter-11" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwelve">chapter twelve</a> 
+                </div>
+                <div id="collapseTwelve" class="accordion-body collapse">
+                    <div id="chapter-12" class="accordion-inner">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- book page content -->
+<div id="dubpages">
+    <div id="left_add" class="add_pagenote"></div>
+    <div id="right_add" class="add_pagenote"></div>
+	<div id="1" class="page left"> </div>
+	<div id="2" class="page right"></div> 
+	<div id="leftPage"></div>
+	<div id="rightPage"></div>
+</div>
+<!-- slider/navigation content -->
+<div id="slide_container"> 
+    <div>     
+    <div id="nav_left"><i class="icon-chevron-left"></i><b>prev</b></div> 
+    <div id="slider"></div> 
+    <div id="nav_right"><b>next</b><i class="icon-chevron-right"></i></div> 
+    </div> 
+	<input type="text" id="pagenum" onkeypress="return changePage(event)" value="2"/>
+    <div id="totalPages"></div>
+</div>
+</body>
+</html>

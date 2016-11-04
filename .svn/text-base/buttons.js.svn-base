@@ -1,0 +1,66 @@
+var highlightMode = false;
+var noteMode = false;
+var showMy = true;
+var showGroup = true;
+
+$(document).ready(function() {
+    $("#my_markup").button('toggle');
+    $("#group_markup").button('toggle')
+
+	$("#highlight").click(function() {
+        $(this).button('toggle');        
+        highlightMode = !(highlightMode);
+        
+        if(noteMode) {
+            $("#addnote").button('toggle');
+            noteMode = false;
+        }
+    });
+
+    $("#addnote").click(function() {
+        $(this).button('toggle');
+        noteMode = !(noteMode);
+        
+        if(highlightMode) {
+            $("#highlight").button('toggle');
+            highlightMode = false;
+        }
+    });
+
+    $("#my_markup").click(function() {
+        $(this).button('toggle');
+        
+        if(showMy) {
+             $(".page").children("span:not(.group)").css("background-color", "white");
+             showMy = false;
+        }
+        else {
+             $(".page").children("span:not(.group)").css("background-color", "yellow");
+             showMy = true;
+        }
+    });
+
+    $("#group_markup").click(function() {
+        $(this).button('toggle');
+        if(showGroup) {
+            $(".page").children(".group").css("background-color", "white");
+             showGroup = false;
+        }
+        else {
+            $(".page").children(".group").css("background-color", "silver");
+             showGroup = true;
+        }
+    });
+
+    $("#notes_page").click(function() {
+        $("#tableModal").modal('show');
+    });
+
+    $("#table").click(function() {
+        $("#tableModal").modal('show');
+    });
+
+    $("#all_markup").click(function() {
+        $("#markupModal").modal('show');
+    });
+});

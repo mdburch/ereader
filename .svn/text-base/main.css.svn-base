@@ -1,0 +1,132 @@
+#toolbar {
+    position:absolute;
+    height:90px;
+    width:100%;
+    top:0px;
+    left:0px;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2)); 
+    border: 1px solid #d4d4d4;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}
+
+.page {
+	width: 45%;
+	height:600px;
+	float: left;
+	padding: 30px;
+    padding-top:10px;
+    font-size:14px;
+    line-height:16px;
+}
+
+.group {
+    background-color: silver;
+}
+
+.group:after {
+    content: "testing";
+}
+
+.icon {
+    padding:0px;
+}
+
+.btn.btn-large.custom:not(.dropdown-toggle) {
+    padding:0px;
+    position:relative;
+    top:-8px;
+}
+
+.dropdown-toggle {
+    top:-8px; 
+    width:5px;    
+}
+
+.caret {
+    position:relative; 
+    left:-5px; 
+}
+
+.row-fluid.tool_text {
+    padding:0px;
+    height:0;
+    font-size:10px;
+    text-align:center;
+    position:relative;
+    top:-8px;
+    left:-17px;
+}
+
+.row-fluid.help_text { 
+    padding:0px; 
+    height:0; 
+    font-size:10px;
+    text-align:center;
+    position:relative;
+    left:-15px;
+}
+
+#dubpages {
+	position: absolute;
+	top: 150px;
+	width:100%;
+}
+
+.left {
+	border-right:solid 1px black;
+}
+
+h4 {
+   margin:0px;
+   padding:0px;
+
+}
+
+#slide_container {
+    position:absolute; 
+    left:50%; 
+    bottom:30px;
+    width:750px;
+    margin:0 auto auto -375px;  
+    display:inline;
+}
+
+#nav_left, #nav_right {
+    float:left;
+    position:relative;
+    top:-7px;
+    padding:0px 15px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+} 
+
+#cur_page {
+    position:relative;
+    top:5px;
+    width:30px; 
+    left:350px; 
+    font-size:14px;
+    font-weight:bold;
+}
+
+.ui-slider {  
+    float:left; 
+    margin:0 auto;
+    height:5px;
+    border:solid 1px black;
+    width:600px;
+}
+
+a.ui-slider-handle.ui-state-default.ui-corner-all { 
+    width:13px;
+    height:13px;
+    top:-5px; 
+    background:black;
+    border-radius:50%;
+    border:solid 1px black;
+}
+
+a.ui-slider-handle.ui-state-default.ui-corner-all:focus {
+    outline:0;
+    border:solid 1px black;
+}

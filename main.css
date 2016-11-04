@@ -1,0 +1,409 @@
+/**************************************************
+ styling for bookpage
+ **************************************************/
+
+ body {
+    overflow: hidden;
+ }
+
+/* class that sets the format of both book pages */
+.page {
+	width: 45%;
+	height:600px;
+	float: left;
+	padding: 30px;
+    padding-top:10px;
+    font-size:14px;
+    line-height:16px;
+}
+
+/* div that holds both pages */
+#dubpages {
+    position: absolute;
+    top: 150px;
+    width:100%;
+}
+
+/* set style of left page (adds border) */
+.left {
+    padding-right: 45px;
+    border-right:solid 1px black;
+}
+
+.right {
+    position: absolute;
+    right: 0px;
+}
+
+/* h4 is the style for chapter titles, modifies default Bootstrap */
+h4 {
+   margin:0px;
+   padding:0px;
+
+}
+
+.add_pagenote {
+    content: url("add_pagenote_icon.png");
+    position: absolute;
+    top:-30px;
+}
+
+#left_add {
+    left:5px;
+}
+
+#right_add {
+    right:2px;
+}
+
+/* sets style of group markup class (spans in XML) */
+.groupHighlight {
+    background-color: #FFFFCC;
+}
+
+.groupQuestion {
+    background-color: #C7C7FF;
+}
+
+.note {
+    position:absolute;
+    content: url("note_icon.png");
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -webkit-user-select: none; 
+    -o-user-select: none; 
+}
+
+.question {
+    position:absolute;
+    content: url("question_icon.png");
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -webkit-user-select: none; 
+    -o-user-select: none; 
+}
+
+.popUp {
+    position: absolute;
+    top:0px;
+    left:0px;
+    display: none;
+    background-color: black;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    max-width: 200px;
+    padding:3px 8px;
+    z-index: 1000;
+    font-size: 10px;
+    color: white;
+    box-shadow: 0px 0px 8px black;
+}
+
+.popText {
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -webkit-user-select: none; 
+    -o-user-select: none; 
+    cursor:default;
+}
+
+a.popText {
+    display: inline;
+    margin: 8px 0px;
+    padding:1px 5px;
+    color: #08c;
+}
+
+a.popText:hover {
+    color: #08c;
+    font-style: underline;
+}
+
+b.popText {
+    display: inline;
+    padding-bottom: 10px;
+    font-size: 11px;
+}
+
+/**************************************************
+ styling for toolbar elements
+ **************************************************/
+
+ /* general styling for top toolbar */
+#toolbar {
+    position:absolute;
+    height:90px;
+    width:100%;
+    top:0px;
+    left:0px;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2)); 
+    border: 1px solid #d4d4d4;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}
+
+#rightPagePopUp {
+	display: none; 
+	position: absolute; 
+	left: 0px; 
+	top: 100px; 
+	border: solid black 1px; 
+    border-left:none;
+	padding: 10px; 
+	background-color: #F8F8F8; 
+	width: 670px; 
+	height: 660px; 
+	z-index: 100;
+    -webkit-border-top-right-radius: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#leftPagePopUp {
+	display: none; 
+	position: absolute; 
+	right: 0px; 
+	top: 100px; 
+	border: solid black 1px; 
+    border-right:none;
+	padding: 10px; 
+	background-color: #F8F8F8; 
+	width: 670px; 
+	height: 660px; 
+	z-index: 100;
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#leftPage {
+	position: absolute; 
+	left: 30px;
+	top: 650px;
+}
+
+#rightPage{
+	position: absolute; 
+	right: 70px;
+	top: 650px;
+}
+
+#rightPageText, #leftPageText {
+    width:670px;
+    height: 375px;
+    overflow: scroll;
+
+}
+
+#leftPageNoteText {
+	width: 650px; 
+	height: 50px; 
+    resize: none;
+}
+
+#rightPageNoteText {
+	width: 650px; 
+	height: 50px; 
+    resize: none;
+}
+
+#addnote, #highlight, #my_markup, #group_markup, #userIcon, #groupIcon, #allQuestionsIcon, #notes_page, #table, #all_markup, #highlightDropDown{
+    cursor: pointer;
+    border-top: solid 2px #eaeaea;
+    border-left: solid 2px #eaeaea;
+    border-bottom: solid 2px #777;
+    border-right: solid 2px #777;	
+    }
+
+#addnote.down, #highlight.down, #my_markup.down, #group_markup.down, #userIcon.down, #groupIcon.down, #allQuestionsIcon.down {
+    background: #bbb;
+    border-top: solid 2px #777;
+    border-left: solid 2px #777;
+    border-bottom:solid 2px  #eaeaea;
+    border-right: solid 2px #eaeaea;
+    }
+
+/* button icon style */
+.icon {
+    padding:0px;
+}
+
+.notesNote:before {
+    content: url("note_icon.png");
+    position: relative;
+    top: 5px;
+    padding: 0 5px;
+}
+
+.notesQuestion:before {
+    content: url("question_icon.png");
+    position: relative;
+    top: 5px;
+    padding: 0 5px;
+}
+
+.notesHighlight:before {
+    content: url("highlight_icon.png");
+    position: relative;
+    top: 5px;
+    padding: 0 5px;
+}
+
+/* 
+ * the following classes modify default Bootstrap styling to get it to look right 
+ */
+
+/* styling for all buttons except notes_page button */
+.btn.btn-large.custom:not(.dropdown-toggle) {
+    padding:0px;
+    position:relative;
+    top:-8px;
+}
+/* styling for notes_page button (customized drop down) */
+#notes_page.btn.btn-large.custom {
+    border-radius: 4px;
+    outline: 0;
+}
+
+/* styling for notes_page caret (needed to move caret into correct position) */
+.caret.down {
+    position: relative;
+    top: 11px;
+    margin-left: 3px;
+}
+
+/* styling for highlight button dropdown toggle */
+.dropdown-toggle {
+    top:-8px; 
+    width:5px;    
+}
+
+/* styling for caret associated with highlight dropdown */
+.caret {
+    position:relative; 
+    left:-5px; 
+}
+
+/* styling tool text in toolbar (upper text) */
+.row-fluid.tool_text {
+    padding:0px;
+    height:0;
+    font-size:10px;
+    text-align:center;
+    position:relative;
+    top:-8px;
+    left:-17px;
+}
+
+/* styling help text in toolbar (lower text) */
+.row-fluid.help_text { 
+    padding:0px; 
+    height:0; 
+    font-size:10px;
+    text-align:center;
+    position:relative;
+    left:-15px;
+}
+
+.icon-mark-group {
+    background-image: url("group_allMark_icon.png");
+    background-position: 0;
+    width: 20px;
+}
+
+.icon-mark-question {
+    background-image: url("question_allMark_icon.png");
+    background-position: 0;
+}
+
+#markButtons {
+    margin-left: 200px;
+}
+
+/**************************************************
+ styling for pop-menu
+ **************************************************/
+
+.pop-menu {
+position: absolute;
+top: inherit;
+left: inherit;
+display: inline;
+list-style: none;
+}
+
+.note_pop {
+    padding: 10px;
+}
+#note_pop_head {
+    padding-bottom: 5px;
+}
+#add_help_text {
+    font-weight: bold;
+    padding-left: 5px;
+}
+#note_textarea, #resp_textarea {
+    width: 300px;
+    height:100px;
+    resize: none;
+}
+
+/**************************************************
+ styling for slider elements
+ **************************************************/
+
+/* div that holds all the slider/nav components */
+#slide_container {
+    position:absolute; 
+    left:50%; 
+    bottom:30px;
+    width:755px;
+    margin:0 auto auto -375px;  
+    display:inline;
+}
+
+/* left and right nav button/text holders */
+#nav_left, #nav_right {
+    float: left;
+    position: relative;
+    top: -7px;
+    padding: 0px 15px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+} 
+
+/* div that holds the current page text */
+#pagenum {
+    margin-top: 5px;
+    width: 18px; 
+    height:10px;
+    margin-left: 350px; 
+    display: inline;
+    text-align: right;
+}
+
+#totalPages {
+    display: inline;
+}
+
+/* following classes modify jQuery styling to get slider to look right */
+.ui-slider {  
+    float: left; 
+    margin: 0 auto;
+    height: 5px;
+    border: solid 1px black;
+    width: 600px;
+}
+
+a.ui-slider-handle.ui-state-default.ui-corner-all { 
+    width: 13px;
+    height: 13px;
+    top: -5px; 
+    background: black;
+    border-radius: 50%;
+    border: solid 1px black;
+}
+
+a.ui-slider-handle.ui-state-default.ui-corner-all:focus {
+    outline: 0;
+    border: solid 1px black;
+}

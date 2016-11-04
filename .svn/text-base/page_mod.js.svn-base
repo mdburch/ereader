@@ -1,0 +1,217 @@
+var highlights = new Array(); //keeps track of highlights, each entry in the array is another array for each page
+var visited_pages = new Array(); //keeps track of already visited pages, 
+                                 //stores a JavaScript Object with params: num (the page number) and page (page innerHTML)
+
+var lastPage; //int representing the final page of the book
+
+/* AJAX function to retrieve a page from the ALICE.XML file.
+ * params: int value representing the page to be retrieved 
+ * returns: innerHTML for page (value of XML page node)
+*/
+ function getPage(pageNum) { 
+
+     for(var i = 0; i < visited_pages.length; i++) { 
+        if(visited_pages[i].num == pageNum)
+            return visited_pages[i].page;
+    }
+    pageNum--; 
+    xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("GET", "Alice.xml", false);
+    xmlhttp.send();
+    xmlDoc = xmlhttp.responseXML;	
+    pageData = xmlDoc.getElementsByTagName("page")[pageNum].childNodes[1].nodeValue;
+    
+    if(lastPage == undefined)
+        lastPage = xmlDoc.getElementsByTagName("page").length; 
+    
+    return pageData; 
+}
+
+/* AJAX function used to load table of contents from ALICE XML file
+ * sets innerHTML of tableBody div according to chapter tag content 
+ * retrieved from XML file.
+ * takes no params, returns void.
+*/
+function loadTable() {
+    xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("GET", "Alice.xml", false);
+    xmlhttp.send();
+    xmlDoc = xmlhttp.responseXML;   
+
+    for(var i = 0; i < xmlDoc.getElementsByTagName("chapter").length; i++) {
+        document.getElementById("tableBody").innerHTML += xmlDoc.getElementsByTagName("chapter")[i].childNodes[1].nodeValue;
+        document.getElementById("tableBody").innerHTML += "<br>"; 
+    } 
+}
+
+/* Function used to load a specific PAIR of pages. 
+ * Uses getPage() helper method to retrieve innerHTML for two facing pages.
+ * params: int pageNum value
+*/
+function loadPage(pageNum) {
+    //before we load the page, we must save the current page to the visited_pages array
+    //if the page is already in the array, we simply update the visited
+    for(var i = 0; i < visited_pages.length; i++) { 
+        if(visited_pages[i].num == $(".left").attr("id"))
+            visited_pages[i].page = $(".left").html();
+        if(visited_pages[i].num == $(".right").attr("id"))
+            visited_pages[i].page = $(".right").html();
+    } 
+    visited_pages.push({num:$(".left").attr("id"), page:$(".left").html()});
+    visited_pages.push({num:$(".right").attr("id"), page:$(".right").html()});
+
+    //now we can retrieve the page content, specific operation based on 
+    //whether the page is odd, even, or a the final odd-numbered page of the book.
+
+    if(pageNum ==lastPage && pageNum%2 == 1) { 
+        $(".left").attr("id", pageNum);
+        $(".left").html(getPage(pageNum));
+        $(".right").attr("id", -1);
+        $(".right").html("");
+        $("#cur_page").html(pageNum + "/" + lastPage); 
+    }
+    if(pageNum%2 == 1) {
+        $(".left").attr("id", pageNum);
+        $(".left").html(getPage(pageNum));
+        $(".right").attr("id", pageNum + 1);
+        $(".right").html(getPage(pageNum + 1));
+        $("#cur_page").html((pageNum + 1) + "/" + lastPage); 
+    } else {
+        $(".left").attr("id", pageNum - 1);
+        $(".left").html(getPage(pageNum - 1)); 
+        $(".right").attr("id", pageNum); 
+        $(".right").html(getPage(pageNum)); 
+        $("#cur_page").html(pageNum + "/" + lastPage);
+    }
+
+    $("#show_page1").html($(".left").attr("id"));
+    $("#show_page2").html($(".right").attr("id"));
+    $( "#slider" ).slider( "option", "value", pageNum )
+}
+
+// on load we set up a number of listeners and
+// load content of certain page related elements
+$(document).ready(function() {
+    
+    //load the table of contents
+    loadTable();
+
+    //load the first two pages 
+    //(the pages to be loaded can be changed based on the ID of the two page DIVs)
+    $(".page").html(function() {
+      pageNum = $(this).attr("id");
+      $(this).html(getPage(pageNum));
+    });
+
+    //set up current page text below slider
+    $("#cur_page").html(2 + "/" + lastPage);
+
+    //add page arrays to highlights array (one for each page, based on lastPage value)
+    //cannot be called until getPage() has been called at least once
+    for(var i = 0; i <= lastPage; i++) {
+    	highlights[i] = new Array();
+    } 
+
+    //initialize slider, max value based on last page
+    //step set to 2
+    $("#slider").slider({
+        max: lastPage,
+        min: 1,
+        step: 2,
+        change: function(event, ui) {
+            if (event.originalEvent) {
+                loadPage($("#slider").slider("value"));
+            }
+        } 
+    });
+
+    //initialize next and prev buttons
+    $("#nav_left").mouseover(function() {
+        $(this).css( 'cursor', 'pointer' );
+    });
+    
+    $("#nav_right").mouseover(function() {
+        $(this).css( 'cursor', 'pointer' );
+    });
+
+    $("#nav_left").click(function() {
+        var pageNum = $(".left").attr("id");
+        if(pageNum > 2) loadPage(pageNum - 1);
+    });
+    
+    $("#nav_right").click(function() {
+        var pageNum = $(".right").attr("id"); 
+        pageNum = parseInt(pageNum);  
+        if(pageNum < lastPage -1) loadPage(pageNum + 1);
+    });
+
+
+    //highlighting function, called as a listener on mouseup
+    //uses Design Mode to insert a SPAN with a highlight background color
+    //around the selected text
+    $(".page").mouseup(function() {
+        //if nothing is selected, return.
+    	if(document.getSelection() == "" || !highlightMode) return;
+
+    	//get page mouseup is call on
+        pageNum = $(this).attr("id");
+    	
+        //turn on design mode
+        document.designMode = "on";
+    	
+        //get selection and range
+        var selection = document.getSelection();
+    	var range = selection.getRangeAt(0);
+
+    	//if this is our first highight on the page, we simply add 
+        //the range text to the highlights[pageNum] array
+        //and insert our span using execCommand (a designode function)
+        if(highlights[pageNum].length==0) {
+    		selection.removeAllRanges();
+    		highlights[pageNum].push(range.toString());
+    		selection.addRange(range);
+    		document.execCommand("backcolor", false, "yellow");
+    	}
+        //otherwise, we must check if this selection is already highlighted
+    	else {
+            //initialize remove with a dummy index and check to see if the
+            //value exists in our highlights[pageNum] array
+    		var remove = -1;
+            for(var i = 0; i < highlights[pageNum].length; i++ ) {
+                if(range.toString() == highlights[pageNum][i].toString()) {
+                    //if the selection is already highlighted, find the span within
+                    //the page and remove it, thus removing the highlight
+                    var remove_span;
+                    var children = this.childNodes;
+                    for(var j = 0; j < children.length; j++) {
+                        if(children[j].innerHTML==range.toString()) {
+                            remove_span = children[j];
+                        }
+                    } 
+                    var text = remove_span.innerHTML;
+                    var node = document.createTextNode(text);
+                    document.getElementById(pageNum).replaceChild(node, remove_span);
+                    remove = i;
+                } 
+            }
+
+            //if remove is still -1, we did not remove the selection
+            //and we can therefore make a new highlight for the selection
+            //otherwise, we remove the selection from our highlights[pageNum] array
+            if(remove == -1) {
+                selection.removeAllRanges();
+                highlights[pageNum].push(range.toString());
+                selection.addRange(range);
+                document.execCommand("backcolor", false, "yellow");
+            } else {
+                highlights[pageNum].splice(remove,1);
+            }
+        }
+
+        //turn off design mode
+        document.designMode = "off";
+        console.log("page #" + pageNum + "\n" + highlights[pageNum].toString()); //for testing
+    });
+});

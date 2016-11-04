@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="buttons.js"></script>
+<script type="text/javascript" src="page_mod.js"></script>
+<link href="main.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="toolbar">
+<div class="row-fluid help_text">
+<div class="span1"></div>
+<div class="span2">modes</div>
+<div class="span3">show/hide</div>
+<div class="span4">show/hide</div>
+<div class="span2"></div>
+</div>
+<br>
+<div class="row-fluid">
+	<div class="span1 offset1 btn-group">
+    <button id="highlight" class="btn btn-large custom"><img class="icon" src="icons/highlight.png"></button> 
+    <button class="btn btn-large custom dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="javascript:void(0)" onClick="changeColor(yellow);">yellow</a></li>
+            <li><a href="javascript:void(0)" onClick="changeColor(green);">green</a></li>
+            <li><a href="javascript:void(0)" onClick="changeColor(blue);">blue</a></li>
+            <li><a href="javascript:void(0)" onClick="changeColor(pink);">pink</a></li> 
+        </ul> 
+    </div>
+	<div class="span1">
+    <button id="addnote" class="btn btn-large custom"><img class="icon" src="icons/add_note.png"></button></div>
+	<div class="span1">
+    <button id="my_markup" class="btn btn-large custom"><img class="icon" src="icons/my_markup.png"></button></div>
+	<div class="span1">
+    <button id="group_markup" class="btn btn-large custom"><img class="icon" src="icons/group_markup.png"></button></div>
+    <div class="span1 btn-group">
+    <button id="notes_page" class="btn btn-large custom"><img class="icon" src="icons/notes_page.png"></button>
+    <button class="btn btn-large custom dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="javascript:void(0)" id="show_page1" onClick="showNotes(page1);">page 1</a></li>
+            <li><a href="javascript:void(0)" id="show_page2" onClick="showNotes(page2);">page 2</a></li> 
+        </ul> 
+    </div>
+    <div class="span1 offset1">
+    <button id="table" class="btn btn-large custom"><img class="icon" src="icons/table.png"></button></div>	
+    <div class="span1">
+    <button id="all_markup" class="btn btn-large custom"><img class="icon" src="icons/all_markup.png"></button></div>	
+    <div class="span1"><input type="text" class="search-query"></div>
+    <div class="span1"></div>
+</div>
+<div class="row-fluid tool_text">
+<div class="span1"></div>
+<div class="span1">highlight</div>
+<div class="span1">note/question</div>
+<div class="span1">my markup</div>
+<div class="span1">group markup</div>
+<div class="span1">notes page</div>
+<div class="span1 offset1">table of contents</div>
+<div class="span1">all markup</div>
+<div class="span2"></div>
+</div>
+</div>
+<!-- Modal -->
+<div id="tableModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Table of Contents</h3>
+    </div>
+    <div id="tableBody" class="modal-body"> 
+    </div> 
+</div>
+ <div id="markupModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">All markup</h3>
+    </div>
+    <div class="modal-body">
+        <div class="accordion" id="accordion2"> 
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">chapter one</a> 
+                </div>
+                <div id="collapseOne" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">chapter two</a> 
+                </div>
+                <div id="collapseTwo" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">chapter three</a> 
+                </div>
+                <div id="collapseThree" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">chapter four</a> 
+                </div>
+                <div id="collapseFour" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">chapter five</a> 
+                </div>
+                <div id="collapseFive" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSix">chapter six</a> 
+                </div>
+                <div id="collapseSix" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSeven">chapter seven</a> 
+                </div>
+                <div id="collapseSeven" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseEight">chapter eight</a> 
+                </div>
+                <div id="collapseEight" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseNine">chapter nine</a> 
+                </div>
+                <div id="collapseNine" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTen">chapter ten</a> 
+                </div>
+                <div id="collapseTen" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseEleven">chapter eleven</a> 
+                </div>
+                <div id="collapseEleven" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-group"> 
+                <div class="accordion-heading"> 
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwelve">chapter twelve</a> 
+                </div>
+                <div id="collapseTwelve" class="accordion-body collapse">
+                    <div class="accordion-inner">filler text...
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div> 
+</div>
+<div id="dubpages">
+	<div id="1" class="page left"> </div>
+	<div id="2" class="page right"></div> 
+</div>
+<div id="slide_container"> 
+    <div>     
+    <div id="nav_left"><i class="icon-chevron-left"></i><b>prev</b></div> 
+    <div id="slider"></div> 
+    <div id="nav_right"><b>next</b><i class="icon-chevron-right"></i></div> 
+    </div> 
+    <div id="cur_page"></div>
+</div>
+</body>
+</html>
